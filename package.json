@@ -2,7 +2,7 @@
     "name": "express",
     "version": "0.1.0",
     "description": "express",
-    "main": "wtf",
+    "main": "index.js",
     "type": "module",
     "scripts": {},
     "author": "Shperung",
