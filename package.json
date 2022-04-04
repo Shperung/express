@@ -1,0 +1,13 @@
+{
+    "name": "express",
+    "version": "0.1.0",
+    "description": "express",
+    "main": "wtf",
+    "type": "module",
+    "scripts": {},
+    "author": "Shperung",
+    "license": "Free",
+    "dependencies": {
+        "express": "^4.17.3"
+    }
+}
