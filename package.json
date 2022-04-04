@@ -4,10 +4,16 @@
     "description": "express",
     "main": "index.js",
     "type": "module",
-    "scripts": {},
+    "scripts": {
+      "serve": "nodemon index.js",
+      "start": "node index.js"
+    },
     "author": "Shperung",
     "license": "Free",
     "dependencies": {
         "express": "^4.17.3"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
     }
 }
