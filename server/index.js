@@ -44,3 +44,29 @@ app.get("/express", (req, res) => {
 app.listen(port, () => {
   console.log(`API starded in http://localhost:${port}/ .......`);
 });
+
+/* приклад для візуалної дічі
+mutation {
+  createUser(input: {
+    username: "User4",
+    age: 22
+  }) {
+    id, username
+  }
+}
+
+
+query {
+  getAllUsers {
+    id, username, age, posts {
+      id, title, content
+    }
+  }
+}
+
+query {
+  getUser(id: 1) {
+    id, username
+  }
+}
+*/
