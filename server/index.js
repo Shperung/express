@@ -1,13 +1,20 @@
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
 import cors from "cors";
+import fs from "fs";
+import { buildSchema } from "graphql";
 
-import schema from "./schema.mjs";
+// import schema from "./schema.mjs";
 import users from "./users.mjs";
 
 const port = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
+
+const schemaString = fs.readFileSync("./server/schema.graphql", {
+  encoding: "utf8",
+});
+const schema = buildSchema(schemaString);
 
 const createUser = (input) => {
   const id = Date.now();
