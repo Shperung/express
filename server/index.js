@@ -53,27 +53,46 @@ app.listen(port, () => {
 });
 
 /* приклад для візуалної дічі
-mutation {
-  createUser(input: {
-    username: "User4",
-    age: 22
-  }) {
-    id, username
-  }
+# alt/ctrl - click - показує типи
+
+fragment UserFragment on User {
+  id, username, age,
 }
 
+fragment PostFragment on Post {
+  id, title, content
+}
+
+# mutation {
+#   createUser(input: {
+#     username: "User4",
+#     age: 22
+#   }) {
+#     id, username
+#   }
+# }
+
+# query {
+#   getAllUsers {
+#     id, username, age, posts {
+#       id, title, content
+#     }
+#   }
+# }
 
 query {
   getAllUsers {
-    id, username, age, posts {
-      id, title, content
+    ...UserFragment
+    posts {
+      ...PostFragment
     }
   }
 }
 
-query {
-  getUser(id: 1) {
-    id, username
-  }
-}
+# query {
+#   getUser(id: 1) {
+#     id, username
+#   }
+# }
+
 */
