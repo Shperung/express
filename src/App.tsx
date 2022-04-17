@@ -29,26 +29,28 @@ function App() {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState(1);
   const [newUser] = useMutation(CREATE_USER);
-  console.log("%c ||||| data", "color:yellowgreen", data);
-  console.log("%c ||||| dataOneUser", "color:yellowgreen", dataOneUser);
 
   const oneUser = dataOneUser?.getUser;
 
-  const addUser = (e: FormEvent<HTMLFormElement>) => {
+  const addUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    newUser({
-      variables: {
-        input: {
-          username,
-          age,
+    try {
+      const data = await newUser({
+        variables: {
+          input: {
+            username,
+            age,
+          },
         },
-      },
-    }).then(({ data }) => {
-      console.log(data);
+      });
+
+      console.log("%c ||||| data", "color:yellowgreen", data);
       setUsername("");
       setAge(0);
       refetch();
-    });
+    } catch (error) {
+      alert("ne ok");
+    }
   };
 
   const getAll = () => {
