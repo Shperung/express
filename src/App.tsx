@@ -69,7 +69,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>GrapgQl</h1>
+        <h1>GraphQl</h1>
       </header>
       <section className="grid">
         <article>
@@ -96,11 +96,13 @@ function App() {
             {loading ? (
               <h2>Loading...</h2>
             ) : users.length ? (
-              users.map((user) => (
-                <div key={user?.id}>
-                  {user?.id} | {user?.username}
-                </div>
-              ))
+              <table>
+                {users.map((user) => (
+                  <tr key={user?.id}>
+                    <td>{user?.id}</td> <td>{user?.username}</td>
+                  </tr>
+                ))}
+              </table>
             ) : null}
           </div>
         </article>
@@ -116,10 +118,13 @@ function App() {
             <button>Find user by id</button>
           </form>
           {oneUser?.id ? (
-            <div>
-              {oneUser?.id || ""} | {oneUser?.username || ""} |
-              {oneUser?.age || ""}
-            </div>
+            <table>
+              <tr>
+                <td>{oneUser?.id || ""}</td>
+                <td>{oneUser?.username || ""}</td>
+                <td>{oneUser?.age || ""}</td>
+              </tr>
+            </table>
           ) : null}
         </article>
       </section>

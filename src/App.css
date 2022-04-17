@@ -9,6 +9,16 @@ button {
   border: 1px solid;
 }
 
+td {
+  border: 1px solid;
+  padding: 2px 8px;
+}
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+}
+
 input {
   height: 32px;
   padding: 4px;
