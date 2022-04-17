@@ -3,11 +3,13 @@ import { graphqlHTTP } from "express-graphql";
 import cors from "cors";
 import fs from "fs";
 import { buildSchema } from "graphql";
+import path from "path";
 
 // import schema from "./schema.mjs";
 import users from "./users.mjs";
 
 const port = process.env.PORT || 3001;
+const __dirname = path.resolve();
 const app = express();
 app.use(cors());
 
@@ -34,6 +36,8 @@ const root = {
   },
 };
 
+app.use(express.static(path.resolve(__dirname, "build")));
+
 // візуальна діч для graphq
 app.use(
   "/express/graphgl",
@@ -44,8 +48,12 @@ app.use(
   })
 );
 
+// app.get("/", function (req, res) {
+//   res.sendFile(path.join(__dirname, "/index.html"));
+// });
+
 app.get("/express", (req, res) => {
-  res.send("<h1>Hello Express.</h1>");
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
 app.listen(port, () => {
