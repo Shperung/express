@@ -13,6 +13,8 @@ const __dirname = path.resolve();
 const app = express();
 app.use(cors());
 
+console.log("%c ||||| __dirname", "color:yellowgreen", __dirname);
+
 const schemaString = fs.readFileSync("./server/schema.graphql", {
   encoding: "utf8",
 });
