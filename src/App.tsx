@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import React, { FormEvent, useEffect, useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 
 import logo from "./logo.svg";
 import "./App.css";
-import { GET_ALL_USERS } from "./user";
+import { GET_ALL_USERS, GET_ONE_USER } from "./query-user";
+import { CREATE_USER } from "./mutation-user";
 
 type UserType = {
   id: number;
@@ -12,10 +13,52 @@ type UserType = {
 };
 
 function App() {
-  const { data, loading, error } = useQuery(GET_ALL_USERS);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const { data, loading, error, refetch } = useQuery(GET_ALL_USERS);
+  const [oneUserId, setOneUserId] = useState<number>(0);
+  const [id, setId] = useState<number>(0);
+  const { data: dataOneUser, loading: loadingOneUser } = useQuery(
+    GET_ONE_USER,
+    {
+      variables: {
+        id: oneUserId,
+      },
+    }
+  );
 
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [username, setUsername] = useState("");
+  const [age, setAge] = useState(1);
+  const [newUser] = useMutation(CREATE_USER);
   console.log("%c ||||| data", "color:yellowgreen", data);
+  console.log("%c ||||| dataOneUser", "color:yellowgreen", dataOneUser);
+
+  const oneUser = dataOneUser?.getUser;
+
+  const addUser = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    newUser({
+      variables: {
+        input: {
+          username,
+          age,
+        },
+      },
+    }).then(({ data }) => {
+      console.log(data);
+      setUsername("");
+      setAge(0);
+      refetch();
+    });
+  };
+
+  const getAll = () => {
+    refetch();
+  };
+
+  const getOneUser = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setOneUserId(id);
+  };
 
   useEffect(() => {
     if (!loading) setUsers(data.getAllUsers);
@@ -24,24 +67,60 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <form className="form">
-          <input type="text" />
-          <input type="number" name="" />
-          <button>SET</button>
-          <button>GET</button>
-        </form>
-        <div>
-          {loading ? (
-            <h2>Loading...</h2>
-          ) : users.length ? (
-            users.map((user) => (
-              <div key={user?.id}>
-                {user?.id} | {user?.username} | {user?.age}
-              </div>
-            ))
-          ) : null}
-        </div>
+        <h1>GrapgQl</h1>
       </header>
+      <section className="grid">
+        <article>
+          <h2>All users</h2>
+          <form onSubmit={(e) => addUser(e)} className="form">
+            <input
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+            />
+            <input
+              value={age}
+              required
+              onChange={(e) => setAge(+e.target.value)}
+              type="number"
+            />
+            <button>Add user</button>
+          </form>
+          <div className="form">
+            <button onClick={getAll}>Get all users</button>
+          </div>
+          <div>
+            {loading ? (
+              <h2>Loading...</h2>
+            ) : users.length ? (
+              users.map((user) => (
+                <div key={user?.id}>
+                  {user?.id} | {user?.username}
+                </div>
+              ))
+            ) : null}
+          </div>
+        </article>
+        <article>
+          <h2>One user</h2>
+          <form onSubmit={(e) => getOneUser(e)} className="form">
+            <input
+              required
+              value={id}
+              onChange={(e) => setId(+e.target.value)}
+              type="text"
+            />
+            <button>Find user by id</button>
+          </form>
+          {oneUser?.id ? (
+            <div>
+              {oneUser?.id || ""} | {oneUser?.username || ""} |
+              {oneUser?.age || ""}
+            </div>
+          ) : null}
+        </article>
+      </section>
     </div>
   );
 }
